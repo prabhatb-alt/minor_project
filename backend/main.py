@@ -21,7 +21,10 @@ CORS(app)
 app.register_blueprint(admin_bp)
 app.register_blueprint(public_bp)
 
-# 4. Define frontend routes
+# ==========================================
+# 4. FRONTEND HTML ROUTES (The updated schema)
+# ==========================================
+
 @app.route('/')
 def serve_index():
     return send_from_directory(app.static_folder, 'index.html')
@@ -32,15 +35,24 @@ def serve_admin():
 
 @app.route('/admin/dashboard')
 def serve_dashboard():
-    return send_from_directory(app.static_folder, 'dashboard.html')
+    # Now correctly points to adm_dash.html
+    return send_from_directory(app.static_folder, 'adm_dash.html')
 
 @app.route('/student')
 def serve_student():
     return send_from_directory(app.static_folder, 'student.html')
 
-@app.route('/employer')
-def serve_employer():
-    return send_from_directory(app.static_folder, 'employer.html')
+@app.route('/student/dashboard')
+def serve_student_dashboard():
+    # New route for the student dashboard
+    return send_from_directory(app.static_folder, 'stud_dash.html')
+
+@app.route('/verification')
+def serve_verification():
+    # Replaced the old /employer route with your new verification route
+    return send_from_directory(app.static_folder, 'verification.html')
+
+# ==========================================
 
 # 5. Server
 if __name__ == "__main__":

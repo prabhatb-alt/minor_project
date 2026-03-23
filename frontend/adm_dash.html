@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Credlytic</title>
+    
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="container">
+        <nav>
+            <div class="logo">
+                <div class="logo-dot"></div>
+                Credlytic <span style="font-size: 0.8rem; color: var(--text-muted); margin-left: 10px; font-weight: 400;">ADMIN DASHBOARD</span>
+            </div>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="theme-toggle" title="Toggle Theme">
+                    <svg id="icon-sun" class="hidden" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                    <svg id="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                </button>
+                <button onclick="logout()" class="btn btn-secondary" style="padding: 8px 20px; font-size: 0.9rem;">Disconnect</button>
+            </div>
+        </nav>
+
+        <main style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem; margin-top: 2rem;">
+            
+            <section class="glass-card">
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 0.5rem;">
+                    <div style="width: 32px; height: 32px; background: var(--primary-dim); border-radius: 8px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--primary);">
+                        <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: none; stroke: var(--primary); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    </div>
+                    <h2 style="margin: 0;">Issue Certificate</h2>
+                </div>
+                <p class="text-muted" style="margin-bottom: 2rem; font-size: 0.95rem;">Trigger blockchain minting and securely dispatch PDF records.</p>
+                
+                <form id="issueForm" style="display: flex; flex-direction: column; gap: 1.5rem;">
+                    <div>
+                        <label style="display: block; font-size: 0.75rem; font-weight: 700; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 8px;">STUDENT FULL NAME</label>
+                        <input type="text" id="studentName" required placeholder="e.g. John Doe" style="width: 100%; background: var(--bg-main); border: 1px solid var(--card-border); color: var(--text-main); padding: 14px; border-radius: 8px; font-family: inherit; font-size: 1rem; outline: none; transition: border-color 0.2s;">
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 0.75rem; font-weight: 700; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 8px;">STUDENT EMAIL</label>
+                        <input type="email" id="studentEmail" required placeholder="student@university.edu" style="width: 100%; background: var(--bg-main); border: 1px solid var(--card-border); color: var(--text-main); padding: 14px; border-radius: 8px; font-family: inherit; font-size: 1rem; outline: none; transition: border-color 0.2s;">
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 0.75rem; font-weight: 700; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 8px;">COURSE / ACHIEVEMENT</label>
+                        <input type="text" id="courseName" required placeholder="e.g. B.Tech Computer Science" style="width: 100%; background: var(--bg-main); border: 1px solid var(--card-border); color: var(--text-main); padding: 14px; border-radius: 8px; font-family: inherit; font-size: 1rem; outline: none; transition: border-color 0.2s;">
+                    </div>
+
+                    <button type="submit" id="submitBtn" class="btn btn-primary" style="margin-top: 1rem; width: 100%;">
+                        Authorize & Mint on Aptos
+                    </button>
+                </form>
+            </section>
+
+            <section class="glass-card" style="background: rgba(10, 10, 12, 0.9); border-color: rgba(0, 230, 118, 0.2); display: flex; flex-direction: column;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                    <h3 style="margin: 0; font-size: 1rem; color: #fff;">Server Uplink</h3>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 0.75rem; color: var(--primary);">CONNECTED</span>
+                        <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--primary); box-shadow: 0 0 10px var(--primary); animation: pulse 2s infinite;"></div>
+                    </div>
+                </div>
+                
+                <div id="log-container" style="font-family: 'Courier New', monospace; font-size: 0.85rem; line-height: 1.6; color: #00e676; flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px;">
+                    <div>> Secure session established.</div>
+                    <div>> Authenticated as: <span id="admin-email" style="color: #fff;"></span></div>
+                    <div>> Awaiting issuance command. . .</div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <style>
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.4; }
+            100% { opacity: 1; }
+        }
+        input:focus { border-color: var(--primary) !important; }
+    </style>
+
+    <script src="/js/network-bg.js"></script>
+    <script src="/js/config.js"></script>
+    <script src="/js/api.js"></script>
+
+    <script>
+        // 1. Security Check: Boot them back to login if they bypassed the gate
+        const adminEmail = localStorage.getItem('admin_email');
+        if (!adminEmail) { 
+            window.location.replace("/admin"); 
+        } else {
+            document.getElementById('admin-email').innerText = adminEmail;
+        }
+
+        // 2. Terminal Log Function
+        function addLog(msg, color = "#00e676") {
+            const log = document.getElementById('log-container');
+            const div = document.createElement('div');
+            div.style.color = color;
+            
+            // Add a little timestamp
+            const now = new Date();
+            const time = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`;
+            
+            div.innerHTML = `<span style="color: #666;">[${time}]</span> > ${msg}`;
+            log.appendChild(div);
+            log.scrollTop = log.scrollHeight; // Auto-scroll to bottom
+        }
+
+        // 3. Logout Logic
+        function logout() {
+            localStorage.removeItem('admin_email');
+            window.location.replace("/admin");
+        }
+
+        // 4. Form Submission Logic (The core pipeline)
+        document.getElementById('issueForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            const formData = {
+                student_name: document.getElementById('studentName').value,
+                student_email: document.getElementById('studentEmail').value,
+                course_name: document.getElementById('courseName').value
+            };
+
+            // Lock the button
+            btn.disabled = true;
+            btn.style.opacity = "0.7";
+            btn.innerText = "Processing Pipeline...";
+            
+            // Print to terminal
+            addLog(`<br/>--- New Issuance Request ---`, "#fff");
+            addLog(`Target: ${formData.student_name} (${formData.student_email})`);
+            addLog("Initiating blockchain minting sequence. . . please wait.", "#ffca28");
+
+            try {
+                // Call the Python backend
+                const result = await API.admin.issueCert(formData);
+
+                if (result.ok) {
+                    addLog("SUCCESS: NFT Certificate minted on Aptos Devnet!", "#00e676");
+                    addLog(`TX Hash: <a href="https://explorer.aptoslabs.com/txn/${result.tx_hash}?network=devnet" target="_blank" style="color: #00b0ff;">${result.tx_hash.substring(0,25)}...</a>`);
+                    addLog("PDF generated and securely uploaded to Supabase.");
+                    addLog("Confirmation email successfully dispatched to student.");
+                    addLog("--- Process Complete ---<br/>", "#fff");
+                    
+                    // Clear the form for the next student
+                    document.getElementById('issueForm').reset();
+                } else {
+                    addLog(`ERROR: ${result.error}`, "#ff4b4b");
+                    addLog("Pipeline aborted.", "#ff4b4b");
+                }
+            } catch (err) {
+                addLog("FATAL: Cannot reach Flask backend. Check server.", "#ff4b4b");
+                console.error(err);
+            } finally {
+                // Unlock the button
+                btn.disabled = false;
+                btn.style.opacity = "1";
+                btn.innerText = "Authorize & Mint on Aptos";
+            }
+        });
+
+        // 5. Theme Toggle Logic
+        const root = document.documentElement;
+        const iconSun = document.getElementById('icon-sun');
+        const iconMoon = document.getElementById('icon-moon');
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        root.setAttribute('data-theme', savedTheme);
+
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            const newTheme = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            root.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateIcons(newTheme);
+        });
+
+        function updateIcons(theme) {
+            if (theme === 'dark') {
+                iconMoon.classList.remove('hidden');
+                iconSun.classList.add('hidden');
+            } else {
+                iconSun.classList.remove('hidden');
+                iconMoon.classList.add('hidden');
+            }
+        }
+        updateIcons(savedTheme);
+    </script>
+</body>
+</html>

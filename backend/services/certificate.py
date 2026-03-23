@@ -11,10 +11,7 @@ TEMPLATE_PATH = os.path.join(BASE_DIR, "..", "..", "frontend", "assets", "images
 
 def create_cert(student_name, course_name, tx_hash, output_pdf_path):
     """
-    This function does three things:
-    1. Generates a QR code for verification.
-    2. Opens your certificate template.
-    3. Draws the name, course, hash, and QR code onto the image.
+    Fixed version with explicit 4-item bounding box for QR code pasting.
     """
     try:
         # 1. CREATE THE QR CODE
@@ -22,13 +19,14 @@ def create_cert(student_name, course_name, tx_hash, output_pdf_path):
         qr = qrcode.QRCode(box_size=4, border=2)
         qr.add_data(verify_link)
         qr.make(fit=True)
-        qr_img = qr.make_image(fill_color="black", back_color="white")
+        # We convert to RGB immediately to ensure compatibility
+        qr_img = qr.make_image(fill_color="black", back_color="white").convert("RGB")
 
         # 2. OPEN THE TEMPLATE
         img = Image.open(TEMPLATE_PATH).convert("RGB")
         draw = ImageDraw.Draw(img)
 
-        # 3. FONT SETP
+        # 3. FONT SETUP
         try:
             name_font = ImageFont.truetype(FONT_PATH, 60)
             sub_font = ImageFont.truetype(FONT_PATH, 25)
@@ -36,14 +34,16 @@ def create_cert(student_name, course_name, tx_hash, output_pdf_path):
             name_font = ImageFont.load_default()
             sub_font = ImageFont.load_default()
 
-        # 4. "DRAW" THE TEXT
+        # 4. DRAW THE TEXT
         draw.text((726, 526), student_name, fill="white", font=name_font)
         draw.text((840, 674), course_name, fill="white", font=sub_font)
         hash_display = f"Blockchain ID: {tx_hash[:20]}..." 
         draw.text((699, 765), hash_display, fill="gray", font=sub_font)
 
-        # 5. QR CODE
-        img.paste(qr_img, (100, 700)) 
+        # 5. QR CODE - Using the explicit 4-item box (x1, y1, x2, y2)
+        x, y = 100, 700
+        width, height = qr_img.size
+        img.paste(qr_img, (x, y, x + width, y + height)) 
 
         # 6. PDF OUTPUT
         img.save(output_pdf_path, "PDF", resolution=100.0)

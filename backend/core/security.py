@@ -9,11 +9,12 @@ def verify_google_token(token):
     Checks if the Google login token is real using your Project Client ID.
     """
     try:
-        # We use the ID from our centralized config
+        # We added clock_skew_in_seconds=10 to fix the 'Token used too early' error
         idinfo = id_token.verify_oauth2_token(
             token, 
             requests.Request(), 
-            config.GOOGLE_CLIENT_ID
+            config.GOOGLE_CLIENT_ID,
+            clock_skew_in_seconds=10 
         )
 
         user_email = idinfo.get("email")
@@ -25,11 +26,22 @@ def verify_google_token(token):
 
 def is_admin_authorized(email):
     """
-    Checks if the logged-in email is in the white-list we set in .env.
+    Checks if the logged-in email is in the whitelist we set in .env.
     """
-    # We check if the email exists in the list we created in config.py
-    if email in config.ADMIN_WHITELIST:
+    # 1. Ensure the email from Google is lowercase and clean
+    clean_email = email.lower().strip()
+
+    # 2. Convert the whitelist into a clean list (removing spaces and making lowercase)
+    # This handles both strings and lists if you change config.py later
+    whitelist = config.ADMIN_WHITELIST
+    if isinstance(whitelist, str):
+        whitelist = [e.strip().lower() for e in whitelist.split(',')]
+    else:
+        whitelist = [str(e).strip().lower() for e in whitelist]
+
+    # 3. Final check
+    if clean_email in whitelist:
         return True
     
-    print(f"Unauthorized login attempt blocked for: {email}")
+    print(f"Unauthorized login attempt blocked for: {clean_email}")
     return False

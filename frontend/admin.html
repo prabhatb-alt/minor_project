@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Portal | Credlytic</title>
+    
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="container">
+        <nav>
+            <div class="logo">
+                <div class="logo-dot"></div>
+                Credlytic
+            </div>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="theme-toggle" title="Toggle Theme">
+                    <svg id="icon-sun" class="hidden" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                    <svg id="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                </button>
+                <a href="/" class="btn btn-secondary" style="padding: 8px 20px; font-size: 0.9rem;">&larr; Back Home</a>
+            </div>
+        </nav>
+
+        <main style="display: flex; min-height: 75vh; align-items: center; justify-content: center; flex-direction: column;">
+            <div class="glass-card" style="width: 100%; max-width: 420px; text-align: center; padding: 3.5rem 2.5rem;">
+                <div style="width: 50px; height: 50px; background: var(--primary-dim); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem auto; border: 1px solid var(--primary);">
+                    <svg viewBox="0 0 24 24" style="width: 24px; height: 24px; fill: none; stroke: var(--primary); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                </div>
+
+                <h2>Restricted Access</h2>
+                <p class="text-muted" style="font-size: 0.95rem; margin-bottom: 2.5rem;">Authorized university administrators only.</p>
+
+                <div style="display: flex; justify-content: center; margin-bottom: 1.5rem; min-height: 44px;">
+                    <div id="g_id_onload"
+                         data-client_id="183630370771-culskbfenon3ca0fo7jfiamp1d6odb22.apps.googleusercontent.com"
+                         data-callback="handleLogin"
+                         data-auto_prompt="false">
+                    </div>
+                    <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="continue_with" data-shape="rectangular"></div>
+                </div>
+
+                <div id="status-msg" style="font-size: 0.85rem; font-weight: 600; min-height: 20px;"></div>
+            </div>
+        </main>
+    </div>
+
+    <script src="/js/network-bg.js"></script>
+    <script src="/js/config.js"></script>
+    <script src="/js/api.js"></script>
+
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const root = document.documentElement;
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        root.setAttribute('data-theme', savedTheme);
+        
+        themeToggle.addEventListener('click', () => {
+            const newTheme = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            root.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateIcons(newTheme);
+        });
+
+        function updateIcons(theme) {
+            document.getElementById('icon-sun').classList.toggle('hidden', theme === 'dark');
+            document.getElementById('icon-moon').classList.toggle('hidden', theme === 'light');
+        }
+        updateIcons(savedTheme);
+
+        // Login Handler
+        async function handleLogin(response) {
+            const statusDiv = document.getElementById('status-msg');
+            statusDiv.style.color = "var(--text-muted)";
+            statusDiv.innerText = "Verifying authorization...";
+
+            try {
+                const result = await API.admin.loginCheck(response.credential);
+                if (result.ok) {
+                    statusDiv.style.color = "var(--primary)";
+                    statusDiv.innerText = `Access Granted: ${result.email}`;
+                    localStorage.setItem('admin_email', result.email);
+                    setTimeout(() => { window.location.href = "/admin/dashboard"; }, 1000);
+                } else {
+                    statusDiv.style.color = "#ff4b4b";
+                    statusDiv.innerText = result.error || "Unauthorized.";
+                }
+            } catch (err) {
+                statusDiv.style.color = "#ff4b4b";
+                statusDiv.innerText = "Connection error. Check console.";
+            }
+        }
+    </script>
+</body>
+</html>

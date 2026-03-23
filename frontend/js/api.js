@@ -20,7 +20,7 @@ const API = {
 
         issueCert: async (certData) => {    // Certificate issue 
             try {
-                const response = await fetch(`${API_BASE_URL}/api/admin/issue`, {
+                const response = await fetch(`${API_BASE_URL}/admin/issue`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(certData)

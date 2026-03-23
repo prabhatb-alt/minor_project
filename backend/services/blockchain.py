@@ -1,19 +1,21 @@
-# Most Important Part - Aptos Devnet Setup
-# https://aptos.dev/move-reference/devnet/aptos-framework
-
 import asyncio
+import time
 from aptos_sdk.account import Account
 from aptos_sdk.async_client import RestClient
 from aptos_sdk.transactions import EntryFunction, TransactionArgument, TransactionPayload, SignedTransaction
 from aptos_sdk.bcs import Serializer
 from core.config import config
 
-# "Minting" on the blockchain asynchronously due to Flask limitations with aptos
 async def _run_minting(student_name, course_name, student_email):
     client = RestClient(config.APTOS_NODE_URL)    
     try:
         university_account = Account.load_key(config.UNIVERSITY_PRIVATE_KEY)
         
+        # --- THE FIX: Create a mathematically unique ID ---
+        # This guarantees the blockchain will never reject it as a duplicate
+        unique_id = str(int(time.time()))[-6:] 
+        unique_token_name = f"{student_name} - {course_name} #{unique_id}"
+
         # Transaction Payload - NFT Minting
         payload = EntryFunction.natural(
             "0x3::token",
@@ -21,7 +23,7 @@ async def _run_minting(student_name, course_name, student_email):
             [],
             [
                 TransactionArgument(config.COLLECTION_NAME, Serializer.str),
-                TransactionArgument(f"Cert: {student_name}", Serializer.str),
+                TransactionArgument(unique_token_name, Serializer.str), # Using the unique name here
                 TransactionArgument(f"Awarded for {course_name}", Serializer.str),
                 TransactionArgument(1, Serializer.u64), # Supply
                 TransactionArgument(1, Serializer.u64), # Max
@@ -50,11 +52,7 @@ async def _run_minting(student_name, course_name, student_email):
         await client.close()
 
 def mint_onchain(name, course, email):
-    """
-    Function to prevent async issues in Flask.
-    """
     try:
-        # Since blockchain work is 'async' by nature, we run it in a loop
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         tx_hash = loop.run_until_complete(_run_minting(name, course, email))

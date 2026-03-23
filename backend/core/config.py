@@ -18,7 +18,7 @@ class ProjectConfig:
         # Aptos Blockchain Settings
         self.APTOS_NODE_URL = os.getenv("APTOS_NODE_URL", "https://fullnode.devnet.aptoslabs.com/v1")
         self.UNIVERSITY_PRIVATE_KEY = os.getenv("UNIVERSITY_PRIVATE_KEY")
-        self.COLLECTION_NAME = "Credlytic - Hack"
+        self.COLLECTION_NAME = "Credlytic - MinorProj"
 
         # SMTP Settings (For sending those emails)
         self.EMAIL_ADDRESS = os.getenv("EMAIL_ADDRESS")
