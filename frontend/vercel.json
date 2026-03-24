@@ -1,0 +1,18 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [
+    {
+      "source": "/admin/dashboard",
+      "destination": "/adm_dash.html"
+    },
+    {
+      "source": "/student/dashboard",
+      "destination": "/stud_dash.html"
+    },
+    {
+      "source": "/",
+      "destination": "/index.html"
+    }
+  ]
+}
