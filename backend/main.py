@@ -3,8 +3,6 @@
 from flask import Flask, send_from_directory
 from flask_cors import CORS
 import os
-
-# Import config and blueprints for routes
 from core.config import config
 from api.routes_admin import admin_bp
 from api.routes_public import public_bp
@@ -62,11 +60,8 @@ if __name__ == "__main__":
     if not config.setup_check():
         print("ERROR: .env is missing (values). Kindly check")
     else:
-        # THE FIX: Render provides a dynamic PORT via environment variables.
-        # This ensures the server "binds" correctly to Render's internal network.
         port = int(os.environ.get("PORT", 5000))
         
-        # Disable debug mode in production for security
         is_dev = os.environ.get("FLASK_ENV") == "development"
         
         print(f"Backend is starting on port {port}...")
