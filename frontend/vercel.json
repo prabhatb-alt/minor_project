@@ -11,6 +11,22 @@
       "destination": "/stud_dash.html"
     },
     {
+      "source": "/admin",
+      "destination": "/admin.html"
+    },
+    {
+      "source": "/student",
+      "destination": "/student.html"
+    },
+    {
+      "source": "/verification",
+      "destination": "/verification.html"
+    },
+    {
+      "source": "/about",
+      "destination": "/about.html"
+    }
+    {
       "source": "/",
       "destination": "/index.html"
     }
