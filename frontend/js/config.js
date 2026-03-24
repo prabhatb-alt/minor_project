@@ -1,15 +1,11 @@
-// Local/prod config
-
+// Automatically switches between Local and Prod based on the browser URL
 const CONFIG = {
-    ENV_INDEX: 0,   //0: local, 1: prod
-    
-    API_URLS: [
-        "http://localhost:5000/api",
-        ""  // RENDER link
-    ],
-
     get current_api() {
-        return this.API_URLS[this.ENV_INDEX];
+        if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
+            return "http://localhost:5000/api";
+        } else {
+            return "https://minor-project-mzi2.onrender.com/api";
+        }
     }
 };
 

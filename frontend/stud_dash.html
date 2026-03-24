@@ -114,6 +114,8 @@
     </div>
 
     <script src="/js/network-bg.js"></script>
+    <script src="/js/config.js"></script>
+    <script src="/js/api.js"></script>
 
     <script>
         let studentCertificates = [];
@@ -168,8 +170,8 @@
             const empty = document.getElementById('emptyState');
 
             try {
-                const response = await fetch(`/api/student/certificates?email=${encodeURIComponent(email)}`);
-                const result = await response.json();
+                // FIXED: Now properly calling the centralized API system!
+                const result = await API.public.fetchStudentCerts(email);
 
                 if (loading) loading.style.display = 'none';
 
@@ -244,7 +246,7 @@
 
         function logout() {
             localStorage.removeItem('student_email');
-            window.location.replace("/student");
+            window.location.replace("/");
         }
     </script>
 </body>
