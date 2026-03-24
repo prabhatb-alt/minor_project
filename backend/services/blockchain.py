@@ -53,10 +53,7 @@ async def _run_minting(student_name, course_name, student_email):
 
 def mint_onchain(name, course, email):
     try:
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        tx_hash = loop.run_until_complete(_run_minting(name, course, email))
-        loop.close()
+        tx_hash = asyncio.run(_run_minting(name, course, email))
         return tx_hash
     except Exception as e:
         print("Blockchain minting failed:", e)

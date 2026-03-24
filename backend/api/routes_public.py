@@ -24,35 +24,29 @@ async def check_aptos_ledger(tx_hash):
 
 @public_bp.route('/api/student/certificates', methods=['GET'])
 def get_student_certs():
-    """
-    Fetches certificates from Supabase AND verifies each one on Aptos
-    before displaying them on the student dashboard.
-    """
     email = request.args.get("email")
     if not email:
         return jsonify({"ok": False, "error": "Email is required"}), 400
 
-    # 1. Pull the raw records from the Supabase database
     result = fetch_cert(email)
-    
     if not result or not result.data:
         return jsonify({"ok": False, "error": "No certificates found"}), 404
+    
+    async def verify_all(certs):
+        tasks = [check_aptos_ledger(cert['tx_hash']) for cert in certs]
+        return await asyncio.gather(*tasks)
 
-    # 2. The Blockchain Filter (Cyber Security Check)
+    validation_results = asyncio.run(verify_all(result.data))
+    
     verified_certs = []
-    for cert in result.data:
-        # Ping Aptos to ensure this hash actually exists and succeeded
-        is_on_chain = asyncio.run(check_aptos_ledger(cert['tx_hash']))
-        
+    for cert, is_on_chain in zip(result.data, validation_results):
         if is_on_chain:
             verified_certs.append(cert)
         else:
             print(f"Warning: Tampered or invalid record found in DB for {email}")
-
-    if len(verified_certs) == 0:
+    if not verified_certs:
         return jsonify({"ok": False, "error": "Records found in DB, but failed blockchain verification."}), 404
 
-    # 3. Send ONLY the cryptographically proven certificates to the frontend
     return jsonify({"ok": True, "certificates": verified_certs}), 200
 
 @public_bp.route('/api/employer/verify', methods=['POST'])

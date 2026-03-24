@@ -64,5 +64,8 @@ if __name__ == "__main__":
     if not config.setup_check():
         print("ERROR: .env is missing (values). Kindly check")
     else:
-        print("Backend is starting on http://localhost:5000")
-        app.run(host="0.0.0.0", port=5000, debug=True)
+        print("Flask Backend Started")
+        port = int(os.environ.get("PORT", 5000))
+        is_dev = os.environ.get("FLASK_ENV") == "development"
+        
+        app.run(host="0.0.0.0", port=port, debug=is_dev)
