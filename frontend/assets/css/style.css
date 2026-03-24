@@ -46,14 +46,13 @@ body {
     background-position: center center;
 }
 
-/* FIX: Three.js Canvas positioning */
 #bg-canvas {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    z-index: 0; /* Brought forward from -1 so the body background doesn't hide it */
+    z-index: 0;
     pointer-events: none;
     opacity: 0.6;
 }
@@ -63,14 +62,14 @@ body {
     max-width: 1600px; 
     margin: 0 auto;
     position: relative;
-    z-index: 10; /* Ensures content stays above the canvas */
+    z-index: 10; 
 }
 
 h1, h2, h3 { font-weight: 700; letter-spacing: -0.03em; }
 .text-accent { color: var(--primary); }
 .hidden { display: none !important; }
 
-/* --- Navigation --- */
+/* --- Global Navigation --- */
 nav {
     display: flex;
     justify-content: space-between;
@@ -96,6 +95,18 @@ nav {
     box-shadow: 0 0 10px var(--primary);
 }
 
+/* The Sub-Brand Text (e.g. ADMIN WORKSPACE) */
+.nav-sub-brand {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    padding-left: 12px;
+    border-left: 1px solid var(--card-border);
+    margin-left: 12px;
+    text-transform: uppercase;
+}
+
 .nav-center {
     display: flex;
     gap: 2.5rem;
@@ -118,6 +129,20 @@ nav {
     display: flex;
     align-items: center;
     gap: 1.5rem;
+}
+
+/* The Email Pill */
+.nav-email-pill {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--primary);
+    background: var(--primary-dim);
+    padding: 6px 14px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid rgba(0, 224, 121, 0.2);
 }
 
 .theme-toggle {
@@ -171,10 +196,10 @@ nav {
 
 /* --- Buttons --- */
 .btn {
-    padding: 14px 32px;
+    padding: 12px 24px;
     border-radius: 8px;
     font-weight: 600;
-    font-size: 1rem;
+    font-size: 0.95rem;
     text-decoration: none;
     transition: all 0.2s;
     display: inline-flex;
@@ -182,6 +207,7 @@ nav {
     justify-content: center;
     cursor: pointer;
     border: 1px solid transparent;
+    white-space: nowrap !important; /* Prevents text wrap on mobile */
 }
 
 .btn-primary {
@@ -211,16 +237,14 @@ nav {
 .section-title {
     text-align: center;
     font-size: 2.5rem;
-    /* Increased top margin to 8rem and bottom to 4rem for better breathing room */
     margin: 8rem 0 4rem 0; 
 }
 
-/* Add some margin to the top features grid so it doesn't hug the hero section */
 .features-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 2rem;
-    margin-bottom: 6rem; /* Increased from 4rem */
+    margin-bottom: 6rem;
 }
 .glass-card {
     background: var(--card-bg);
@@ -237,91 +261,61 @@ nav {
     box-shadow: 0 10px 30px var(--primary-dim);
 }
 
-.glass-card h3 {
-    font-size: 1.3rem;
-    margin-bottom: 1rem;
-}
-
-.glass-card p {
-    color: var(--text-muted);
-    font-size: 1rem;
-}
+.glass-card h3 { font-size: 1.3rem; margin-bottom: 1rem; }
+.glass-card p { color: var(--text-muted); font-size: 1rem; }
 
 /* --- Workflow Section --- */
-.workflow-step {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
+.workflow-step { text-align: center; display: flex; flex-direction: column; align-items: center; }
 .workflow-num {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background: var(--primary-dim);
-    color: var(--primary);
-    font-weight: 800;
-    font-size: 1.5rem;
-    margin-bottom: 1.5rem;
-    border: 1px solid var(--primary);
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 50px; height: 50px; border-radius: 50%;
+    background: var(--primary-dim); color: var(--primary);
+    font-weight: 800; font-size: 1.5rem; margin-bottom: 1.5rem; border: 1px solid var(--primary);
 }
 
 /* --- Tech Architecture Banner --- */
 .tech-banner {
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
-    padding: 4rem 2rem;
-    border-radius: 16px;
-    margin-top: 2rem;
-    text-align: center; 
-    backdrop-filter: blur(16px);
+    background: var(--card-bg); border: 1px solid var(--card-border);
+    padding: 4rem 2rem; border-radius: 16px; margin-top: 2rem;
+    text-align: center; backdrop-filter: blur(16px);
 }
 
-.tech-grid {
-    display: flex;
-    gap: 1.5rem;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-top: 3rem;
-}
-
+.tech-grid { display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center; margin-top: 3rem; }
 .tech-item {
-    background: rgba(0, 230, 118, 0.05); 
-    border: 1px solid var(--card-border);
-    padding: 1.5rem 2rem;
-    border-radius: 12px;
-    min-width: 220px;
+    background: rgba(0, 230, 118, 0.05); border: 1px solid var(--card-border);
+    padding: 1.5rem 2rem; border-radius: 12px; min-width: 220px;
     transition: transform 0.2s, border-color 0.2s;
 }
+.tech-item:hover { transform: translateY(-3px); border-color: var(--primary); }
 
-.tech-item:hover {
-    transform: translateY(-3px);
-    border-color: var(--primary);
-}
 /* --- Mobile Responsiveness --- */
 @media (max-width: 768px) {
     .container { width: 90%; }
-    .nav-center { display: none; } 
-    .hero { padding: 4rem 0 2rem 0; } /* Added some bottom padding to the hero */
     
-    /* FIX: Scaled down the max viewport width (vw) so "mathematically" doesn't overflow */
+    /* Nav Mobile Overrides */
+    .nav-center { display: none; } 
+    .nav-sub-brand { display: none; } /* Hides extra text */
+    .nav-email-pill { display: none !important; } /* Hides email */
+    .nav-actions { gap: 12px; }
+    
+    /* Prevents nav buttons from going 100% width */
+    nav .btn { 
+        width: auto; 
+        margin-bottom: 0; 
+        padding: 8px 16px; 
+        font-size: 0.85rem; 
+    }
+
+    .hero { padding: 4rem 0 2rem 0; } 
     .hero h1 { 
         font-size: clamp(2.5rem, 11vw, 3.5rem); 
         line-height: 1.1;
         letter-spacing: -1px;
     }
-
-    .hero p {
-        font-size: 1rem;
-        margin-bottom: 2.5rem;
-        padding: 0 10px; /* Gives the paragraph a tiny bit of side breathing room */
-    }
+    .hero p { font-size: 1rem; margin-bottom: 2.5rem; padding: 0 10px; }
     
-    .btn { width: 100%; margin-bottom: 0.8rem; }
+    /* Main body buttons go full width */
+    main .btn, header .btn { width: 100%; margin-bottom: 0.8rem; }
     
     .tech-banner { padding: 3rem 1.5rem; }
     .tech-item { width: 100%; }

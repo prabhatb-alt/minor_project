@@ -52,6 +52,11 @@ def serve_verification():
     # Replaced the old /employer route with your new verification route
     return send_from_directory(app.static_folder, 'verification.html')
 
+@app.route('/about')
+def about_page():
+    """Serves the project and team information page."""
+    return send_from_directory(app.static_folder, 'about.html')
+
 # ==========================================
 
 # 5. Server

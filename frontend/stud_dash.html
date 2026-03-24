@@ -4,125 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Credentials | Credlytic</title>
-    
     <link rel="stylesheet" href="/assets/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
     <style>
-        /* Card Hover Effects */
-        .cert-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--card-border);
-            border-radius: 12px;
-            padding: 1.5rem;
-            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            overflow: hidden;
-        }
-        .cert-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; height: 3px;
-            background: var(--primary);
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.3s ease;
-        }
-        .cert-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary-dim);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
+        .cert-card { background: rgba(255, 255, 255, 0.03); border: 1px solid var(--card-border); border-radius: 12px; padding: 1.5rem; transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); cursor: pointer; display: flex; flex-direction: column; position: relative; overflow: hidden; }
+        .cert-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--primary); transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease; }
+        .cert-card:hover { transform: translateY(-5px); border-color: var(--primary-dim); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
         .cert-card:hover::before { transform: scaleX(1); }
 
-        /* The Premium Modal Overlay */
-        .modal-backdrop {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(8px);
-            display: flex; align-items: center; justify-content: center;
-            z-index: 1000;
-            opacity: 0; pointer-events: none;
-            transition: opacity 0.3s ease;
-            padding: 20px;
-        }
-        .modal-backdrop.active {
-            opacity: 1; pointer-events: auto;
-        }
-        .modal-content {
-            background: var(--bg-main);
-            border: 1px solid var(--card-border);
-            border-radius: 16px;
-            width: 100%; max-width: 1100px; max-height: 90vh;
-            overflow-y: auto;
-            position: relative;
-            transform: translateY(30px);
-            transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-            display: flex; flex-direction: column;
-        }
-        .modal-backdrop.active .modal-content {
-            transform: translateY(0);
-        }
-        .close-btn {
-            position: absolute; top: 20px; right: 20px;
-            background: rgba(255,255,255,0.1); border: none;
-            width: 36px; height: 36px; border-radius: 50%;
-            color: var(--text-main); font-size: 1.2rem;
-            cursor: pointer; display: flex; align-items: center; justify-content: center;
-            transition: background 0.2s; z-index: 10;
-        }
+        .modal-backdrop { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; padding: 20px; }
+        .modal-backdrop.active { opacity: 1; pointer-events: auto; }
+        .modal-content { background: var(--bg-main); border: 1px solid var(--card-border); border-radius: 16px; width: 100%; max-width: 1100px; max-height: 90vh; overflow-y: auto; position: relative; transform: translateY(30px); transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); display: flex; flex-direction: column; }
+        .modal-backdrop.active .modal-content { transform: translateY(0); }
+        .close-btn { position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,0.1); border: none; width: 36px; height: 36px; border-radius: 50%; color: var(--text-main); font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; z-index: 10; }
         .close-btn:hover { background: rgba(255,75,75,0.8); color: white; }
 
-        /* Modal Grid Layout */
-        .modal-grid {
-            display: grid;
-            grid-template-columns: 350px 1fr;
-            min-height: 600px;
-        }
-        @media (max-width: 900px) {
-            .modal-grid { grid-template-columns: 1fr; display: flex; flex-direction: column; }
-            .modal-sidebar { border-right: none !important; border-bottom: 1px solid var(--card-border); }
-        }
-        .modal-sidebar {
-            padding: 2.5rem;
-            border-right: 1px solid var(--card-border);
-            background: rgba(255,255,255,0.01);
-            display: flex; flex-direction: column;
-        }
-        .modal-pdf-container {
-            padding: 0;
-            background: rgba(0,0,0,0.5);
-            display: flex; flex-direction: column;
-        }
+        .modal-grid { display: grid; grid-template-columns: 350px 1fr; min-height: 600px; }
+        @media (max-width: 900px) { .modal-grid { grid-template-columns: 1fr; display: flex; flex-direction: column; } .modal-sidebar { border-right: none !important; border-bottom: 1px solid var(--card-border); } }
+        .modal-sidebar { padding: 2.5rem; border-right: 1px solid var(--card-border); background: rgba(255,255,255,0.01); display: flex; flex-direction: column; }
+        .modal-pdf-container { padding: 0; background: rgba(0,0,0,0.5); display: flex; flex-direction: column; }
 
         .data-label { font-size: 0.7rem; color: var(--text-muted); font-weight: 800; letter-spacing: 1px; margin-bottom: 6px; text-transform: uppercase; }
         .data-value { font-size: 1.1rem; font-weight: 600; color: var(--text-main); margin-bottom: 1.5rem; }
         .hash-box { font-family: monospace; font-size: 0.8rem; color: var(--primary); background: rgba(0, 224, 121, 0.05); padding: 10px; border-radius: 6px; border: 1px dashed rgba(0, 224, 121, 0.2); word-break: break-all; }
         
-        .hidden { display: none !important; }
         @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
     <canvas id="bg-canvas"></canvas>
-
     <div class="container">
         <nav>
             <div class="logo">
                 <div class="logo-dot"></div>
-                Credlytic <span style="font-size: 0.8rem; color: var(--text-muted); margin-left: 10px; font-weight: 400;">STUDENT WALLET</span>
+                Credlytic <span class="nav-sub-brand">STUDENT PORTAL</span>
             </div>
-            <div class="nav-actions" style="display: flex; align-items: center; gap: 15px;">
-                <span id="user-email-display" style="font-size: 0.85rem; font-weight: 600; color: var(--primary); display: none; background: var(--primary-dim); padding: 4px 12px; border-radius: 20px;"></span>
+            <div class="nav-actions">
+                <span id="user-email-display" class="nav-email-pill hidden"></span>
                 <button class="theme-toggle" id="theme-toggle" title="Toggle Theme">
                     <svg id="icon-sun" class="hidden" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
                     <svg id="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
                 </button>
-                <button onclick="logout()" class="btn btn-secondary" style="padding: 6px 16px; font-size: 0.85rem;">Sign Out</button>
+                <button onclick="logout()" class="btn btn-secondary">Sign Out</button>
             </div>
         </nav>
 
@@ -144,46 +69,36 @@
                 <p class="text-muted">Cross-referencing database with Aptos Blockchain Devnet...</p>
             </div>
 
-            <div id="certGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; display: none;">
-                </div>
+            <div id="certGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; display: none;"></div>
 
             <div id="emptyState" class="hidden" style="text-align: center; padding: 6rem 2rem; background: rgba(255,255,255,0.01); border: 1px dashed var(--card-border); border-radius: 16px;">
                 <svg viewBox="0 0 24 24" style="width: 64px; height: 64px; fill: none; stroke: var(--text-muted); stroke-width: 1.5; margin-bottom: 1.5rem; opacity: 0.3;"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
                 <h3 style="margin-bottom: 0.5rem; font-size: 1.5rem;">Wallet is Empty</h3>
                 <p class="text-muted" style="max-width: 450px; margin: 0 auto; line-height: 1.6;">Your university hasn't issued any blockchain records to this email address yet. Once minted, they will automatically appear here.</p>
             </div>
-
         </main>
     </div>
 
     <div id="certModal" class="modal-backdrop">
         <div class="modal-content glass-card">
             <button class="close-btn" onclick="closeModal()">×</button>
-            
             <div class="modal-grid">
                 <div class="modal-sidebar">
                     <div style="display: inline-flex; align-items: center; gap: 8px; background: var(--primary-dim); color: var(--primary); padding: 6px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.5px; margin-bottom: 2rem; border: 1px solid var(--primary); align-self: flex-start;">
                         <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="3" fill="none"><polyline points="20 6 9 17 4 12"></polyline></svg>
                         ON-CHAIN VERIFIED
                     </div>
-
                     <div class="data-label">Credential Name</div>
                     <h2 id="modalCourse" style="font-size: 1.8rem; margin: 0 0 2rem 0; line-height: 1.2; color: var(--text-main);"></h2>
-
                     <div class="data-label">Issued To</div>
                     <div id="modalName" class="data-value"></div>
-
                     <div class="data-label">Issuance Date</div>
                     <div id="modalDate" class="data-value"></div>
-
                     <div style="flex-grow: 1;"></div>
-
                     <div class="data-label">Immutable Ledger ID</div>
                     <div id="modalHash" class="hash-box" style="margin-bottom: 1.5rem;"></div>
-
                     <a id="modalExplorer" href="#" target="_blank" class="btn btn-secondary" style="text-align: center; padding: 12px; font-size: 0.9rem;">View Raw Transaction</a>
                 </div>
-
                 <div class="modal-pdf-container">
                     <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; background: rgba(0,0,0,0.3); border-bottom: 1px solid var(--card-border);">
                         <span style="font-size: 0.8rem; font-weight: 700; color: #aaa; letter-spacing: 1px;">ORIGINAL DOCUMENT</span>
@@ -201,42 +116,66 @@
     <script src="/js/network-bg.js"></script>
 
     <script>
-        // Global variable to hold data for the modal
         let studentCertificates = [];
 
-        // --- 1. Security Check ---
-        const studentEmail = localStorage.getItem('student_email');
-        
-        if (!studentEmail) {
-            window.location.replace("/student");
-        } else {
+        document.addEventListener("DOMContentLoaded", () => {
+            const root = document.documentElement;
+            const themeBtn = document.getElementById('theme-toggle');
+            const iconSun = document.getElementById('icon-sun');
+            const iconMoon = document.getElementById('icon-moon');
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            
+            function updateIcons(theme) {
+                if (theme === 'dark') {
+                    if(iconMoon) iconMoon.classList.remove('hidden');
+                    if(iconSun) iconSun.classList.add('hidden');
+                } else {
+                    if(iconSun) iconSun.classList.remove('hidden');
+                    if(iconMoon) iconMoon.classList.add('hidden');
+                }
+            }
+
+            root.setAttribute('data-theme', savedTheme);
+            updateIcons(savedTheme);
+
+            if (themeBtn) {
+                themeBtn.addEventListener('click', () => {
+                    const newTheme = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+                    root.setAttribute('data-theme', newTheme);
+                    localStorage.setItem('theme', newTheme);
+                    updateIcons(newTheme);
+                });
+            }
+
+            const studentEmail = localStorage.getItem('student_email');
+            if (!studentEmail) {
+                window.location.replace("/student");
+                return;
+            } 
+
             const emailDisplay = document.getElementById('user-email-display');
-            emailDisplay.innerText = studentEmail;
-            emailDisplay.style.display = 'block';
-            fetchCertificates();
-        }
+            if (emailDisplay) {
+                emailDisplay.innerText = studentEmail;
+                emailDisplay.classList.remove('hidden');
+            }
+            
+            fetchCertificates(studentEmail);
+        });
 
-        function logout() {
-            localStorage.removeItem('student_email');
-            window.location.replace("/student");
-        }
-
-        // --- 2. Data Fetching ---
-        async function fetchCertificates() {
+        async function fetchCertificates(email) {
             const grid = document.getElementById('certGrid');
             const loading = document.getElementById('loadingState');
             const empty = document.getElementById('emptyState');
 
             try {
-                // This hits your upgraded Python route that automatically filters out fake hashes via Aptos
-                const response = await fetch(`/api/student/certificates?email=${encodeURIComponent(studentEmail)}`);
+                const response = await fetch(`/api/student/certificates?email=${encodeURIComponent(email)}`);
                 const result = await response.json();
 
-                loading.style.display = 'none';
+                if (loading) loading.style.display = 'none';
 
-                if (result.ok && result.certificates.length > 0) {
-                    studentCertificates = result.certificates; // Save for modal
-                    grid.style.display = 'grid';
+                if (result.ok && result.certificates && result.certificates.length > 0) {
+                    studentCertificates = result.certificates; 
+                    if (grid) grid.style.display = 'grid';
                     
                     studentCertificates.forEach((cert, index) => {
                         const dateObj = new Date(cert.issued_at);
@@ -245,7 +184,6 @@
 
                         const card = document.createElement('div');
                         card.className = 'cert-card';
-                        // The entire card is now clickable and opens the modal
                         card.onclick = () => openModal(index);
                         card.innerHTML = `
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
@@ -255,10 +193,8 @@
                                 </div>
                                 <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">${dateStr}</div>
                             </div>
-                            
                             <h3 style="margin: 0 0 0.5rem 0; font-size: 1.3rem; line-height: 1.3; color: var(--text-main);">${cert.course_name}</h3>
                             <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem; flex-grow: 1;">Issuer: K.R. Mangalam</p>
-                            
                             <div style="font-family: monospace; font-size: 0.8rem; color: #888; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.05);">
                                 ${shortHash}
                             </div>
@@ -266,73 +202,49 @@
                         grid.appendChild(card);
                     });
                 } else {
-                    empty.classList.remove('hidden');
+                    if (empty) empty.classList.remove('hidden');
                 }
             } catch (err) {
-                loading.style.display = 'none';
-                empty.querySelector('h3').innerText = "System Offline";
-                empty.querySelector('p').innerText = "Could not reach the Devnet nodes. Please try again later.";
-                empty.classList.remove('hidden');
+                console.error(err);
+                if (loading) loading.style.display = 'none';
+                if (empty) {
+                    empty.querySelector('h3').innerText = "System Offline";
+                    empty.querySelector('p').innerText = "Could not reach the Devnet nodes. Please try again later.";
+                    empty.classList.remove('hidden');
+                }
             }
         }
 
-        // --- 3. Modal Logic ---
         function openModal(index) {
             const cert = studentCertificates[index];
             const dateObj = new Date(cert.issued_at);
             
-            // Populate Modal Data
             document.getElementById('modalCourse').innerText = cert.course_name;
             document.getElementById('modalName').innerText = cert.student_name;
             document.getElementById('modalDate').innerText = dateObj.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
             document.getElementById('modalHash').innerText = cert.tx_hash;
             
-            // Populate Links & Iframe
             document.getElementById('modalExplorer').href = `https://explorer.aptoslabs.com/txn/${cert.tx_hash}?network=devnet`;
             document.getElementById('modalDownload').href = cert.pdf_url;
             document.getElementById('modalIframe').src = cert.pdf_url;
 
-            // Show Modal
             document.getElementById('certModal').classList.add('active');
-            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            document.body.style.overflow = 'hidden'; 
         }
 
         function closeModal() {
             document.getElementById('certModal').classList.remove('active');
             document.body.style.overflow = 'auto';
-            // Clear iframe to stop it from loading in background
             setTimeout(() => document.getElementById('modalIframe').src = "", 300);
         }
 
-        // Close modal if user clicks the dark background outside the content
         document.getElementById('certModal').addEventListener('click', function(e) {
             if (e.target === this) closeModal();
         });
 
-        // --- 4. Theme Toggle ---
-        const root = document.documentElement;
-        const iconSun = document.getElementById('icon-sun');
-        const iconMoon = document.getElementById('icon-moon');
-        const savedTheme = localStorage.getItem('theme') || 'dark';
-        
-        root.setAttribute('data-theme', savedTheme);
-        updateIcons(savedTheme);
-
-        document.getElementById('theme-toggle').addEventListener('click', () => {
-            const newTheme = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-            root.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            updateIcons(newTheme);
-        });
-
-        function updateIcons(theme) {
-            if (theme === 'dark') {
-                iconMoon.classList.remove('hidden');
-                iconSun.classList.add('hidden');
-            } else {
-                iconSun.classList.remove('hidden');
-                iconMoon.classList.add('hidden');
-            }
+        function logout() {
+            localStorage.removeItem('student_email');
+            window.location.replace("/student");
         }
     </script>
 </body>

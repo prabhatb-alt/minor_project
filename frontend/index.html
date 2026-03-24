@@ -4,17 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Credlytic | On-Chain Verification</title>
-    
     <link rel="stylesheet" href="assets/css/style.css">
-    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
-
     <canvas id="bg-canvas"></canvas>
-
     <div class="container">
         <nav>
             <div class="logo">
@@ -25,35 +20,23 @@
             <div class="nav-center">
                 <a href="#how-it-works">How It Works</a>
                 <a href="#architecture">Architecture</a>
-                <a href="https://github.com/prabhatbhatia" target="_blank">GitHub</a>
+                <a href="https://github.com/prabhatb-alt/minor_project" target="_blank">GitHub</a>
             </div>
 
             <div class="nav-actions">
                 <button class="theme-toggle" id="theme-toggle" title="Toggle Theme">
-                    <svg id="icon-sun" class="hidden" viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                    <svg id="icon-moon" viewBox="0 0 24 24">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
+                    <svg id="icon-sun" class="hidden" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                    <svg id="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
                 </button>
-                <a href="/admin" class="btn btn-secondary" style="padding: 10px 24px; font-size: 0.9rem;">Admin Portal</a>
+                <a href="/admin" class="btn btn-secondary">Admin Portal</a>
             </div>
         </nav>
 
         <header class="hero">
             <h1>Trust, mathematically <span class="text-accent">proven.</span></h1>
-            <p>We've replaced paper degrees with immutable Aptos smart contracts. Instantly issue, verify, and secure academic credentials without the friction.</p>
+            <p>We've replaced paper degrees with immutable Aptos NFT's. Instantly issue, verify, and secure academic credentials without the friction.</p>
             
-            <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; margin-top: 1rem;">
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; margin-top: 1rem; width: 100%; max-width: 500px;">
                 <a href="/student" class="btn btn-primary">Open Student Portal</a>
                 <a href="/verification" class="btn btn-secondary">Verify a Certificate</a>
             </div>
@@ -61,17 +44,15 @@
 
         <section class="features-grid">
             <div class="glass-card">
-                <h3 class="text-accent">01 // On-Chain Permanence</h3>
+                <h3 class="text-accent">01. On-Chain Permanence</h3>
                 <p>Minted directly to the Aptos Devnet. Your achievements are cryptographically secured and physically impossible to tamper with, alter, or destroy.</p>
             </div>
-
             <div class="glass-card">
-                <h3 class="text-accent">02 // Zero-Friction Verification</h3>
+                <h3 class="text-accent">02. Zero-Friction Verification</h3>
                 <p>No more waiting weeks for university registrars to pick up the phone. Employers can validate transaction hashes in milliseconds via our portal.</p>
             </div>
-
             <div class="glass-card">
-                <h3 class="text-accent">03 // Automated Delivery</h3>
+                <h3 class="text-accent">03. Automated Delivery</h3>
                 <p>The moment an admin approves your credential, our engine draws the PDF, generates a unique QR code, and drops it directly in your inbox.</p>
             </div>
         </section>
@@ -85,7 +66,7 @@
             </div>
             <div class="glass-card workflow-step">
                 <div class="workflow-num">2</div>
-                <h3>Smart Contract Mints</h3>
+                <h3>NFT Based Mints</h3>
                 <p class="text-muted">The backend signs the transaction using the university's private key, minting the credential to the Aptos blockchain.</p>
             </div>
             <div class="glass-card workflow-step">
@@ -108,11 +89,11 @@
                 </div>
                 <div class="tech-item">
                     <h4 class="text-accent" style="margin-bottom: 0.5rem; font-size: 1.1rem;">Database</h4>
-                    <p class="text-main" style="font-weight: 600;">Supabase (PostgreSQL)</p>
+                    <p class="text-main" style="font-weight: 600;">PostgreSQL</p>
                 </div>
                 <div class="tech-item">
                     <h4 class="text-accent" style="margin-bottom: 0.5rem; font-size: 1.1rem;">Authentication</h4>
-                    <p class="text-main" style="font-weight: 600;">Google OAuth 2.0</p>
+                    <p class="text-main" style="font-weight: 600;">Google OAuth + Aptos</p>
                 </div>
                 <div class="tech-item">
                     <h4 class="text-accent" style="margin-bottom: 0.5rem; font-size: 1.1rem;">Backend API</h4>
@@ -123,20 +104,18 @@
 
         <footer style="margin-top: 6rem; padding: 3rem 0; border-top: 1px solid var(--card-border); text-align: center;">
             <p style="color: var(--text-muted); font-size: 0.9rem;">
-                &copy; 2026 Credlytic. Built for the Minor Project.
+                &copy; Minor Project built by <a href="https://prabhatbhatia.netlify.app" target="_blank">Prabhat Bhatia</a> and Team
             </p>
         </footer>
     </div>
 
     <script src="js/network-bg.js"></script>
-
     <script>
         const themeToggle = document.getElementById('theme-toggle');
         const iconSun = document.getElementById('icon-sun');
         const iconMoon = document.getElementById('icon-moon');
         const root = document.documentElement;
         
-        // Initialize theme
         const savedTheme = localStorage.getItem('theme') || 'dark';
         root.setAttribute('data-theme', savedTheme);
         updateIcons(savedTheme);
@@ -144,7 +123,6 @@
         themeToggle.addEventListener('click', () => {
             const currentTheme = root.getAttribute('data-theme');
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            
             root.setAttribute('data-theme', newTheme);
             localStorage.setItem('theme', newTheme);
             updateIcons(newTheme);

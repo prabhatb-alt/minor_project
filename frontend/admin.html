@@ -4,17 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Portal | Credlytic</title>
-    
     <link rel="stylesheet" href="/assets/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-
     <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
-
     <canvas id="bg-canvas"></canvas>
-
     <div class="container">
         <nav>
             <div class="logo">
@@ -26,7 +22,7 @@
                     <svg id="icon-sun" class="hidden" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
                     <svg id="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
                 </button>
-                <a href="/" class="btn btn-secondary" style="padding: 8px 20px; font-size: 0.9rem;">&larr; Back Home</a>
+                <a href="/" class="btn btn-secondary">Home</a>
             </div>
         </nav>
 
@@ -43,9 +39,9 @@
 
                 <div style="display: flex; justify-content: center; margin-bottom: 1.5rem; min-height: 44px;">
                     <div id="g_id_onload"
-                         data-client_id="183630370771-culskbfenon3ca0fo7jfiamp1d6odb22.apps.googleusercontent.com"
-                         data-callback="handleLogin"
-                         data-auto_prompt="false">
+                        data-client_id="183630370771-culskbfenon3ca0fo7jfiamp1d6odb22.apps.googleusercontent.com"
+                        data-callback="handleLogin"
+                        data-auto_prompt="false">
                     </div>
                     <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="continue_with" data-shape="rectangular"></div>
                 </div>
@@ -60,7 +56,6 @@
     <script src="/js/api.js"></script>
 
     <script>
-        // Theme Toggle
         const themeToggle = document.getElementById('theme-toggle');
         const root = document.documentElement;
         const savedTheme = localStorage.getItem('theme') || 'dark';
@@ -79,7 +74,6 @@
         }
         updateIcons(savedTheme);
 
-        // Login Handler
         async function handleLogin(response) {
             const statusDiv = document.getElementById('status-msg');
             statusDiv.style.color = "var(--text-muted)";

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Credlytic | Project Details</title>
+    
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <style>
+        .page-header { text-align: center; margin: 4rem auto 3rem; max-width: 900px; padding: 0 15px; }
+        .page-header h1 { font-size: clamp(2.2rem, 5vw, 3.2rem); margin-bottom: 1rem; letter-spacing: -1px; line-height: 1.2; }
+        .page-header p { font-size: 1.1rem; color: var(--primary); font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
+
+        .project-meta {
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 1.5rem; 
+            margin-bottom: 4rem; background: rgba(0,0,0,0.2); padding: 20px; 
+            border-radius: 16px; border: 1px solid var(--card-border);
+            max-width: 900px; margin-left: auto; margin-right: auto;
+        }
+        .meta-item { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+        .meta-label { font-size: 0.65rem; font-weight: 800; letter-spacing: 1px; color: var(--text-muted); text-transform: uppercase; }
+        .meta-value { font-size: 0.95rem; font-weight: 600; color: var(--text-main); }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto 5rem;
+            padding: 0 15px;
+        }
+        @media (max-width: 900px) { .content-grid { grid-template-columns: 1fr; gap: 2rem; } }
+
+        .info-section {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 2.5rem;
+            backdrop-filter: blur(16px);
+        }
+        .info-section h3 { font-size: 1.5rem; margin-bottom: 1.5rem; color: var(--text-main); display: flex; align-items: center; gap: 10px; }
+        .info-section h3 svg { color: var(--primary); }
+        .info-section p { color: var(--text-muted); line-height: 1.7; margin-bottom: 1rem; font-size: 0.95rem; }
+
+        .obj-list { list-style: none; padding: 0; }
+        .obj-list li {
+            display: flex; align-items: flex-start; gap: 12px;
+            margin-bottom: 1rem; color: var(--text-muted); font-size: 0.95rem; line-height: 1.5;
+        }
+        .obj-list svg { flex-shrink: 0; color: var(--primary); margin-top: 3px; }
+
+        .tech-pill-container { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 1.5rem; }
+        .tech-pill {
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1);
+            padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; color: var(--text-main);
+        }
+        .tech-pill.primary { background: var(--primary-dim); border-color: rgba(0,224,121,0.3); color: var(--primary); }
+
+        .ref-section { max-width: 1200px; margin: 0 auto 5rem; padding: 0 15px; }
+        .ref-list { display: flex; flex-direction: column; gap: 1rem; }
+        .ref-item {
+            background: rgba(0,0,0,0.2); border: 1px solid var(--card-border); border-left: 3px solid var(--primary);
+            padding: 1.5rem; border-radius: 8px; font-size: 0.9rem; color: var(--text-muted); line-height: 1.6;
+        }
+        .ref-item strong { color: var(--text-main); }
+
+        .leader-section { max-width: 500px; margin: 0 auto 6rem; padding: 0 15px; text-align: center; }
+        .leader-card {
+            background: var(--card-bg); border: 1px solid var(--primary-dim);
+            border-radius: 16px; padding: 3rem 2rem 2rem; position: relative;
+            box-shadow: 0 10px 40px rgba(0, 224, 121, 0.05); margin-top: 50px;
+        }
+        .pfp-wrapper {
+            position: absolute; top: -50px; left: 50%; transform: translateX(-50%);
+            width: 100px; height: 100px; border-radius: 50%;
+            background: var(--bg-main); padding: 6px; border: 2px solid var(--primary);
+        }
+        .pfp-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+        
+        .contact-row {
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            margin-top: 10px; font-size: 0.85rem; color: var(--text-muted); font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="container">
+        <nav>
+            <div class="logo">
+                <div class="logo-dot"></div>
+                Credlytic <span class="nav-sub-brand">RESEARCH & ARCHITECTURE</span>
+            </div>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="theme-toggle" title="Toggle Theme">
+                    <svg id="icon-sun" class="hidden" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                    <svg id="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                </button>
+                <a href="/" class="btn btn-secondary" style="padding: 8px 20px; font-size: 0.9rem;">Home</a>
+            </div>
+        </nav>
+
+        <main>
+            <header class="page-header">
+                <h1>A Conceptual Blockchain-Based Certificate Vault</h1>
+                <p>Minor Project Synopsis Report</p>
+            </header>
+
+            <div class="project-meta">
+                <div class="meta-item">
+                    <span class="meta-label">Institution</span>
+                    <span class="meta-value">K.R Mangalam University</span>
+                </div>
+                <div style="width: 1px; background: var(--card-border);"></div>
+                <div class="meta-item">
+                    <span class="meta-label">Category</span>
+                    <span class="meta-value">First Year Startup</span>
+                </div>
+                <div style="width: 1px; background: var(--card-border);"></div>
+                <div class="meta-item">
+                    <span class="meta-label">Team ID</span>
+                    <span class="meta-value">26E1047</span>
+                </div>
+                <div style="width: 1px; background: var(--card-border);"></div>
+                <div class="meta-item">
+                    <span class="meta-label">Internal Mentor</span>
+                    <span class="meta-value">Dr. Feroz Ahmed</span>
+                </div>
+            </div>
+
+            <div class="content-grid">
+                
+                <div class="info-section">
+                    <h3>
+                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                        Problem Statement & Abstract
+                    </h3>
+                    <p>The rapid digitalization of education has significantly increased the reliance on certificates as proof of knowledge. However, traditional certificate management systems rely on physical documents or centralized digital storage, which are prone to forgery, duplication, loss, and unauthorized modification.</p>
+                    <p>To address these issues, Credlytic introduces a decentralized certificate management system. The system utilizes Non-Fungible Tokens (NFTs) to convert certificates into unique digital assets that are securely recorded on the Aptos blockchain, ensuring they cannot be altered or misused.</p>
+                </div>
+
+                <div class="info-section">
+                    <h3>
+                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                        Core Objectives
+                    </h3>
+                    <ul class="obj-list">
+                        <li>
+                            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="3" fill="none"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            Develop a secure, decentralized platform for issuing and managing academic certificates.
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="3" fill="none"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            Implement Non-Fungible Tokens (NFTs) to represent credentials as unique, tamper-proof digital assets.
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="3" fill="none"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            Ensure data immutability by storing records on the Aptos blockchain network.
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="3" fill="none"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            Enable instant, reliable verification of certificates without manual administrative processes.
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="info-section" style="grid-column: 1 / -1;">
+                    <h3>
+                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                        Methodology & Technology Stack
+                    </h3>
+                    <p>The methodology combines certificate generation, NFT-based representation, blockchain storage, wallet integration, and instant verification into a unified workflow. Administrators input student data via a secure frontend, triggering a Python (Flask) backend to programmatically generate the digital document. This asset is uploaded to Supabase, while an immutable transaction hash is minted to the Aptos Devnet ledger.</p>
+                    
+                    <div class="tech-pill-container">
+                        <span class="tech-pill primary">Aptos Blockchain</span>
+                        <span class="tech-pill">Python / Flask</span>
+                        <span class="tech-pill">Supabase (PostgreSQL)</span>
+                        <span class="tech-pill">REST APIs</span>
+                        <span class="tech-pill">Google OAuth 2.0</span>
+                        <span class="tech-pill">HTML / CSS / JS</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="leader-section">
+                <h2 style="margin-bottom: 0.5rem;">Project Lead</h2>
+                <p class="text-muted" style="margin-bottom: 2rem;">B.Tech CSE (Cyber Security) EC-Council - A</p>
+                
+                <div class="leader-card">
+                    <div class="pfp-wrapper">
+                        <img src="https://ui-avatars.com/api/?name=Prabhat+Bhatia&background=00e676&color=000&font-size=0.4&bold=true" alt="Prabhat Bhatia" class="pfp-img">
+                    </div>
+                    
+                    <h3 style="font-size: 1.5rem; margin-bottom: 4px; color: var(--text-main);">Prabhat Bhatia</h3>
+                    <div style="font-size: 0.75rem; font-weight: 800; letter-spacing: 1px; color: var(--primary); text-transform: uppercase; margin-bottom: 1.5rem;">Architecture & Development</div>
+                    
+                    <div class="contact-row">
+                        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                        ID: 2501410006
+                    </div>
+                    <div class="contact-row">
+                        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                        2501410006@krmu.edu.in
+                    </div>
+                </div>
+            </div>
+
+            <div class="ref-section">
+                <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 10px;">
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="var(--primary)" stroke-width="2" fill="none"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                    Literature & References
+                </h3>
+                <div class="ref-list">
+                    <div class="ref-item">
+                        <strong>Nakamoto, S. (2008).</strong> Bitcoin: A Peer-to-Peer Electronic Cash System. Introduces the concept of blockchain technology and decentralized ledgers, forming the foundation of secure and immutable data storage used in this project.
+                    </div>
+                    <div class="ref-item">
+                        <strong>Aptos Labs. (2023).</strong> Aptos Blockchain Documentation. Official documentation providing details on Aptos blockchain architecture, smart contracts, and NFT standards used for certificate verification.
+                    </div>
+                    <div class="ref-item">
+                        <strong>World Wide Web Consortium (W3C). (2019).</strong> Verifiable Credentials Data Model. This standard describes a framework for expressing and verifying digital credentials in a secure and interoperable manner.
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="/js/network-bg.js"></script>
+    <script>
+        const root = document.documentElement;
+        const iconSun = document.getElementById('icon-sun');
+        const iconMoon = document.getElementById('icon-moon');
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        
+        root.setAttribute('data-theme', savedTheme);
+        updateIcons(savedTheme);
+
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            const newTheme = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            root.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateIcons(newTheme);
+        });
+
+        function updateIcons(theme) {
+            if (theme === 'dark') {
+                iconMoon.classList.remove('hidden');
+                iconSun.classList.add('hidden');
+            } else {
+                iconSun.classList.remove('hidden');
+                iconMoon.classList.add('hidden');
+            }
+        }
+    </script>
+</body>
+</html>

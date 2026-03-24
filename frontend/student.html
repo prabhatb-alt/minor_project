@@ -4,28 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Access | Credlytic</title>
-    
     <link rel="stylesheet" href="/assets/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    
     <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
     <canvas id="bg-canvas"></canvas>
-
     <div class="container">
         <nav>
             <div class="logo">
                 <div class="logo-dot"></div>
-                Credlytic <span style="font-size: 0.8rem; color: var(--text-muted); margin-left: 10px; font-weight: 400;">STUDENT PORTAL</span>
+                Credlytic <span class="nav-sub-brand">STUDENT PORTAL</span>
             </div>
             <div class="nav-actions">
                 <button class="theme-toggle" id="theme-toggle" title="Toggle Theme">
                     <svg id="icon-sun" class="hidden" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
                     <svg id="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
                 </button>
-                <a href="/" class="btn btn-secondary" style="padding: 8px 20px; font-size: 0.9rem;">Back Home</a>
+                <a href="/" class="btn btn-secondary">Home</a>
             </div>
         </nav>
 
@@ -40,7 +37,6 @@
                 <p class="text-muted" style="margin-bottom: 2.5rem; font-size: 0.95rem;">Access your cryptographically secured academic records and certificates.</p>
 
                 <div style="display: flex; flex-direction: column; gap: 1rem;">
-                    
                     <div id="g_id_onload"
                          data-client_id="183630370771-culskbfenon3ca0fo7jfiamp1d6odb22.apps.googleusercontent.com"
                          data-context="signin"
@@ -83,7 +79,6 @@
     <script src="/js/network-bg.js"></script>
 
     <script>
-        // --- 1. Google Authentication Logic ---
         function parseJwt(token) {
             var base64Url = token.split('.')[1];
             var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -95,23 +90,14 @@
 
         function handleGoogleLogin(response) {
             const payload = parseJwt(response.credential);
-            const userEmail = payload.email;
-            
-            // Save the email to localStorage so stud_dash.html can find it
-            localStorage.setItem('student_email', userEmail);
-            
-            // Send them to the dashboard!
+            localStorage.setItem('student_email', payload.email);
             window.location.href = "/student/dashboard";
         }
 
-        // --- 2. Microsoft / Outlook Logic ---
         function handleMicrosoftLogin() {
-            // Note: To make this work securely, you'd wire this button up to 
-            // Supabase Auth -> Azure AD provider in your final build.
             alert("Microsoft Authentication is currently being configured by the IT department. Please use the developer bypass for testing.");
         }
 
-        // --- 3. Developer Bypass (For testing your dashboard fast) ---
         function devLogin() {
             const email = document.getElementById('devEmail').value.trim();
             if(email) {
@@ -122,7 +108,6 @@
             }
         }
 
-        // --- Theme Toggle Logic ---
         const root = document.documentElement;
         const iconSun = document.getElementById('icon-sun');
         const iconMoon = document.getElementById('icon-moon');
