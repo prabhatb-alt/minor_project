@@ -15,7 +15,7 @@ def create_cert(student_name, course_name, tx_hash, output_pdf_path):
     """
     try:
         # 1. CREATE THE QR CODE
-        verify_link = f"https://explorer.aptoslabs.com/txn/{tx_hash}?network=devnet"
+        verify_link = f"https://explorer.aptoslabs.com/txn/{tx_hash}?network=testnet"
         qr = qrcode.QRCode(box_size=4, border=2)
         qr.add_data(verify_link)
         qr.make(fit=True)

@@ -40,14 +40,14 @@ async def initialize_university_collection():
         )
         signed_tx = SignedTransaction(raw_tx, university_account.sign_transaction(raw_tx))
         
-        # Submit to Aptos Devnet
+        # Submit to Aptos Testnet
         tx_hash = await client.submit_bcs_transaction(signed_tx)
         print(f"Transaction submitted! Hash: {tx_hash}")
 
         # Wait for confirmation
         await client.wait_for_transaction(tx_hash)
         print(f"\nSUCCESS: Collection '{config.COLLECTION_NAME}' is now live on the blockchain!")
-        print(f"View here: https://explorer.aptoslabs.com/txn/{tx_hash}?network=devnet")
+        print(f"View here: https://explorer.aptoslabs.com/txn/{tx_hash}?network=testnet")
 
     except Exception as e:
         if "AlreadyExists" in str(e) or "ECOLLECTION_ALREADY_EXISTS" in str(e):

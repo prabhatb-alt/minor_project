@@ -16,7 +16,7 @@ class ProjectConfig:
         self.SUPABASE_BUCKET = "certificates"
 
         # Aptos Blockchain Settings
-        self.APTOS_NODE_URL = os.getenv("APTOS_NODE_URL", "https://fullnode.devnet.aptoslabs.com/v1")
+        self.APTOS_NODE_URL = os.getenv("APTOS_NODE_URL", "https://fullnode.testnet.aptoslabs.com/v1")
         self.UNIVERSITY_PRIVATE_KEY = os.getenv("UNIVERSITY_PRIVATE_KEY")
         self.COLLECTION_NAME = "Credlytic - MinorProj"
 

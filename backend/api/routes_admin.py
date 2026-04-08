@@ -62,7 +62,7 @@ def issue_cert():
     save_todb(student_name, student_email, course_name, tx_hash, cloud_url)
 
     # --- 5. Send the mail ---
-    explorer_url = f"https://explorer.aptoslabs.com/txn/{tx_hash}?network=devnet"
+    explorer_url = f"https://explorer.aptoslabs.com/txn/{tx_hash}?network=testnet"
     send_email(student_email, student_name, course_name, explorer_url, temp_path)
 
     # --- cleaning the system ---

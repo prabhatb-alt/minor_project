@@ -83,7 +83,7 @@
                         <div id="statusBadge" style="padding: 8px 20px; border-radius: 30px; font-size: 0.9rem; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;"></div>
                         <div style="font-size: 0.8rem; color: var(--primary); font-weight: 600; display: flex; align-items: center; gap: 6px;">
                             <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="3" fill="none"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                            Verified via Aptos Devnet & Database
+                            Verified via Aptos Testnet & Database
                         </div>
                     </div>
                     
@@ -217,7 +217,7 @@
                     
                     const linkBtn = document.getElementById('explorerLink');
                     linkBtn.classList.remove('hidden');
-                    linkBtn.href = `https://explorer.aptoslabs.com/txn/${txHash}?network=devnet`;
+                    linkBtn.href = `https://explorer.aptoslabs.com/txn/${txHash}?network=testnet`;
 
                 } else {
                     showError(result.error);
