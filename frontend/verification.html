@@ -3,312 +3,300 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employer Verification | Credlytic Network</title>
+    <title>Verify | Credlytic</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
     <style>
-        :root {
-            --bg-dark: #0a0a0a;
-            --card-bg: #1a1a1a;
-            --primary-green: #00e676;
-            --text-main: #f0f0f0;
-            --text-muted: #888;
-            --error-red: #ff4d4d;
-        }
+        input:focus { border-color: var(--primary) !important; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 600px;
-            padding: 20px;
-        }
-
-        .verification-card {
-            background-color: var(--card-bg);
-            border-radius: 12px;
-            padding: 40px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-            border: 1px solid #333;
-        }
-
-        h2 {
-            margin-top: 0;
-            font-weight: 600;
-            text-align: center;
-            letter-spacing: 1px;
-        }
-
-        .subtitle {
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 14px;
-            margin-bottom: 30px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--text-muted);
-        }
-
-        input {
-            width: 100%;
-            padding: 12px 15px;
-            background-color: #000;
-            border: 1px solid #333;
-            border-radius: 6px;
-            color: var(--text-main);
-            font-family: monospace;
-            font-size: 14px;
-            box-sizing: border-box;
-            transition: border-color 0.3s ease;
-        }
-
-        input:focus {
-            outline: none;
-            border-color: var(--primary-green);
-        }
-
-        button {
-            width: 100%;
-            padding: 14px;
-            background-color: var(--primary-green);
-            color: #000;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.1s ease;
-            margin-top: 10px;
-        }
-
-        button:hover {
-            background-color: #00c853;
-        }
-
-        button:active {
-            transform: scale(0.98);
-        }
-
-        button:disabled {
-            background-color: #333;
-            color: #666;
-            cursor: not-allowed;
-        }
-
-        /* Status and Result Areas */
-        #status-message {
-            margin-top: 20px;
-            padding: 15px;
-            border-radius: 6px;
-            font-size: 14px;
-            text-align: center;
-            display: none;
-        }
-
-        .error-msg {
-            background-color: rgba(255, 77, 77, 0.1);
-            color: var(--error-red);
-            border: 1px solid var(--error-red);
-        }
-
-        #result-box {
-            margin-top: 30px;
-            display: none;
-            border-top: 1px solid #333;
-            padding-top: 20px;
-        }
-
-        .result-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px dashed #333;
-        }
-
-        .result-label {
-            color: var(--text-muted);
-            font-size: 14px;
-        }
-
-        .result-value {
-            font-weight: 600;
-            font-size: 14px;
-            text-align: right;
-            max-width: 60%;
-            word-wrap: break-word;
-        }
-
-        .verified-badge {
-            display: inline-block;
-            background-color: rgba(0, 230, 118, 0.1);
-            color: var(--primary-green);
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            margin-top: 5px;
-            border: 1px solid var(--primary-green);
-        }
+        .verified-glow { box-shadow: 0 0 40px rgba(0, 224, 121, 0.12); border: 1px solid rgba(0, 224, 121, 0.3) !important; background: linear-gradient(180deg, rgba(0,224,121,0.05) 0%, rgba(255,255,255,0.01) 100%) !important; }
+        .data-label { font-size: 0.7rem; color: var(--text-muted); font-weight: 800; letter-spacing: 1px; margin-bottom: 6px; text-transform: uppercase; }
+        .data-value { font-size: 1.15rem; font-weight: 600; color: var(--text-main); }
+        .hash-box { font-family: 'Courier New', Courier, monospace; font-size: 0.85rem; color: var(--primary); background: rgba(0, 224, 121, 0.05); padding: 10px 14px; border-radius: 6px; border: 1px dashed rgba(0, 224, 121, 0.2); word-break: break-all; }
         
-        .loader {
-            display: none;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(0,0,0,0.3);
-            border-radius: 50%;
-            border-top-color: #000;
-            animation: spin 1s ease-in-out infinite;
-            margin: 0 auto;
+        .btn { white-space: nowrap !important; }
+
+        .verification-grid {
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            gap: 2rem;
+            align-items: stretch;
+            margin-bottom: 2rem;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        @media (max-width: 960px) {
+            .verification-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-
+    <canvas id="bg-canvas"></canvas>
     <div class="container">
-        <div class="verification-card">
-            <h2>Cryptographic Verification</h2>
-            <div class="subtitle">Aptos Testnet Secure Ledger Lookup</div>
-
-            <form id="verifyForm">
-                <div class="form-group">
-                    <label for="txHash">Blockchain Transaction Hash (Required)</label>
-                    <input type="text" id="txHash" placeholder="0x..." required autocomplete="off">
-                </div>
-
-                <div class="form-group">
-                    <label for="email">Student Email (Optional Identity Check)</label>
-                    <input type="email" id="email" placeholder="student@example.com" autocomplete="off">
-                </div>
-
-                <button type="submit" id="verifyBtn">
-                    <span id="btnText">Verify Record</span>
-                    <div class="loader" id="btnLoader"></div>
-                </button>
-            </form>
-
-            <div id="status-message"></div>
-
-            <div id="result-box">
-                <div class="result-item">
-                    <span class="result-label">Status</span>
-                    <span class="result-value">
-                        <span style="color: var(--primary-green);">Valid on Blockchain</span>
-                    </span>
-                </div>
-                <div class="result-item">
-                    <span class="result-label">Candidate Name</span>
-                    <span class="result-value" id="resName"></span>
-                </div>
-                <div class="result-item">
-                    <span class="result-label">Credential</span>
-                    <span class="result-value" id="resCourse"></span>
-                </div>
-                <div class="result-item" id="emailResultRow">
-                    <span class="result-label">Identity Match</span>
-                    <span class="result-value" id="resIdentity"></span>
-                </div>
-                <div style="text-align: center; margin-top: 20px;">
-                    <a id="resExplorer" href="#" target="_blank" style="color: var(--primary-green); text-decoration: none; font-size: 14px;">View Raw Ledger Data &rarr;</a>
-                </div>
+        
+        <nav>
+            <div class="logo">
+                <div class="logo-dot"></div>
+                Credlytic <span class="nav-sub-brand">VERIFICATION PORTAL</span>
             </div>
-        </div>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="theme-toggle" title="Toggle Theme">
+                    <svg id="icon-sun" class="hidden" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                    <svg id="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                </button>
+                <a href="/" class="btn btn-secondary" style="padding: 8px 18px; font-size: 0.85rem;">Home</a>
+            </div>
+        </nav>
+
+        <main id="main-container" style="max-width: 550px; margin: 2rem auto; padding: 0 15px; transition: max-width 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);">
+            <section class="glass-card" style="text-align: center; padding: 3rem 2.5rem;">
+                
+                <div id="input-section">
+                    <div style="display: inline-flex; align-items: center; justify-content: center; width: 60px; height: 60px; border-radius: 50%; background: var(--primary-dim); margin-bottom: 1.5rem; border: 1px solid var(--primary);">
+                        <svg viewBox="0 0 24 24" style="width: 28px; height: 28px; fill: none; stroke: var(--primary); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+                    </div>
+                    <h2 style="margin-bottom: 0.5rem; font-size: 2.2rem; letter-spacing: -0.5px;">Verify Credential</h2>
+                    <p class="text-muted" style="margin-bottom: 2.5rem; font-size: 1.05rem; line-height: 1.5;">Query the Aptos blockchain to confirm the mathematical authenticity of an academic record.</p>
+
+                    <form id="verifyForm" style="display: flex; flex-direction: column; gap: 1.5rem; text-align: left;">
+                        <div>
+                            <label class="data-label">TRANSACTION HASH (REQUIRED)</label>
+                            <input type="text" id="verifyHash" required placeholder="0x..." style="width: 100%; background: rgba(0,0,0,0.1); border: 1px solid var(--card-border); color: var(--text-main); padding: 16px; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 1rem; outline: none; transition: all 0.2s;">
+                        </div>
+                        <div>
+                            <label class="data-label">STUDENT EMAIL (OPTIONAL)</label>
+                            <input type="email" id="verifyEmail" placeholder="student@university.edu" style="width: 100%; background: rgba(0,0,0,0.1); border: 1px solid var(--card-border); color: var(--text-main); padding: 16px; border-radius: 8px; font-family: inherit; font-size: 1rem; outline: none; transition: all 0.2s;">
+                        </div>
+
+                        <button type="submit" id="verifyBtn" class="btn btn-primary" style="width: 100%; margin-top: 1rem; padding: 18px; font-size: 1.15rem; font-weight: 700;">
+                            Verify Result
+                        </button>
+                    </form>
+                </div>
+
+                <div id="resultArea" class="hidden" style="animation: slideUp 0.5s ease-out; text-align: left;">
+                    
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 2.5rem;">
+                        <div id="statusIcon"></div>
+                        <div id="statusBadge" style="padding: 8px 20px; border-radius: 30px; font-size: 0.9rem; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;"></div>
+                        <div style="font-size: 0.8rem; color: var(--primary); font-weight: 600; display: flex; align-items: center; gap: 6px;">
+                            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="3" fill="none"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            Verified via Aptos Testnet & Database
+                        </div>
+                    </div>
+                    
+                    <div id="successContainer" class="hidden">
+                        
+                        <div class="verification-grid">
+                            <div class="verified-glow" style="border-radius: 12px; padding: 2rem; display: flex; flex-direction: column;">
+                                <div style="border-bottom: 1px solid var(--card-border); padding-bottom: 1.5rem; margin-bottom: 1.5rem;">
+                                    <div class="data-label">Credential Title</div>
+                                    <h3 id="certCourse" style="margin: 0; font-size: 1.8rem; color: var(--primary); font-weight: 800; line-height: 1.2;"></h3>
+                                </div>
+                                
+                                <div style="display: flex; flex-direction: column; gap: 1.5rem; flex-grow: 1;">
+                                    <div>
+                                        <div class="data-label">Awarded To</div>
+                                        <div id="certName" class="data-value"></div>
+                                    </div>
+                                    
+                                    <div>
+                                        <div class="data-label">Registered Identity</div>
+                                        <div id="certEmail" class="data-value" style="font-family: monospace;"></div>
+                                        <div id="emailNote" style="font-size: 0.75rem; color: var(--primary); margin-top: 6px; display: none; font-weight: 600;">✓ Full Email Match Verified</div>
+                                    </div>
+
+                                    <div style="margin-top: auto; padding-top: 1.5rem;">
+                                        <div class="data-label">Immutable Ledger Hash</div>
+                                        <div id="certHash" class="hash-box"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="border: 1px solid var(--card-border); border-radius: 12px; overflow: hidden; background: rgba(0,0,0,0.3); display: flex; flex-direction: column;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; border-bottom: 1px solid var(--card-border); background: rgba(255,255,255,0.02);">
+                                    <span class="data-label" style="margin: 0;">Original Document</span>
+                                    <a id="downloadPdfBtn" href="#" target="_blank" download class="btn btn-secondary" style="padding: 6px 14px; font-size: 0.8rem; display: flex; align-items: center; gap: 8px;">
+                                        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                        Download PDF
+                                    </a>
+                                </div>
+                                <iframe id="certIframe" src="" style="width: 100%; aspect-ratio: 1.414 / 1; border: none; display: block; overflow: hidden;" scrolling="no" title="Certificate Document"></iframe>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div id="errorContainer" class="hidden" style="text-align: center; padding: 2rem 0;">
+                        <h3 id="resultTitle" style="margin-bottom: 1rem; font-size: 2rem;"></h3>
+                        <p id="resultDetails" class="text-muted" style="margin-bottom: 2.5rem; font-size: 1.1rem; line-height: 1.6; max-width: 500px; margin-left: auto; margin-right: auto;"></p>
+                    </div>
+                    
+                    <div style="display: flex; gap: 1rem; justify-content: center; max-width: 500px; margin: 0 auto;">
+                        <a id="explorerLink" href="#" target="_blank" class="btn btn-primary" style="flex: 1; text-align: center; font-size: 1.1rem; padding: 14px;">View Raw Ledger</a>
+                        <button onclick="resetVerification()" class="btn btn-secondary" style="flex: 1; font-size: 1.1rem; padding: 14px;">Verify Another</button>
+                    </div>
+                </div>
+
+            </section>
+        </main>
     </div>
 
+    <script src="/js/network-bg.js"></script>
+    <script src="/js/config.js"></script>
+    <script src="/js/api.js"></script>
+
     <script>
+        function maskEmail(email) {
+            if (!email) return "Unknown";
+            const parts = email.split('@');
+            if (parts.length !== 2) return email;
+            const name = parts[0];
+            const domain = parts[1];
+            
+            if (name.length <= 2) return name[0] + '***@' + domain;
+            return name.substring(0, 2) + '*'.repeat(name.length - 2) + '@' + domain;
+        }
+
         document.getElementById('verifyForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            
-            const txHash = document.getElementById('txHash').value.trim();
-            const email = document.getElementById('email').value.trim();
-            
             const btn = document.getElementById('verifyBtn');
-            const btnText = document.getElementById('btnText');
-            const loader = document.getElementById('btnLoader');
-            const statusBox = document.getElementById('status-message');
-            const resultBox = document.getElementById('result-box');
-
-            // Reset UI
-            statusBox.style.display = 'none';
-            resultBox.style.display = 'none';
-            statusBox.className = '';
+            const mainContainer = document.getElementById('main-container');
+            const inputSection = document.getElementById('input-section');
+            const resultArea = document.getElementById('resultArea');
+            const successContainer = document.getElementById('successContainer');
+            const errorContainer = document.getElementById('errorContainer');
             
-            // Loading State
+            const email = document.getElementById('verifyEmail').value.trim();
+            const txHash = document.getElementById('verifyHash').value.trim();
+
             btn.disabled = true;
-            btnText.style.display = 'none';
-            loader.style.display = 'block';
+            btn.style.opacity = "0.7";
+            btn.innerText = "Connecting to Node...";
 
             try {
-                // IMPORTANT: This relative path automatically resolves to your Render backend 
-                // because of how Vercel routing / Flask CORS is set up.
+                // THE FIX: Direct fetch replaces the api.js wrapper to properly handle 401/404 logic
                 const response = await fetch('/api/employer/verify', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ tx_hash: txHash, email: email })
                 });
+                const result = await response.json();
 
-                const data = await response.json();
+                inputSection.classList.add('hidden');
+                resultArea.classList.remove('hidden');
 
-                if (response.ok && data.ok) {
-                    // SUCCESS STATE
-                    const cert = data.certificate;
+                const badge = document.getElementById('statusBadge');
+                const icon = document.getElementById('statusIcon');
+
+                if (response.ok && result.ok && result.certificate) {
+                    mainContainer.style.maxWidth = "1050px";
+
+                    successContainer.classList.remove('hidden');
+                    errorContainer.classList.add('hidden');
+
+                    icon.innerHTML = `<svg viewBox="0 0 24 24" style="width: 55px; height: 55px; fill: none; stroke: var(--primary); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0px 0px 8px rgba(0,224,121,0.4));"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`;
                     
-                    document.getElementById('resName').textContent = cert.student_name;
-                    document.getElementById('resCourse').textContent = cert.course_name;
+                    badge.innerText = "AUTHENTICATED";
+                    badge.style.background = "var(--primary-dim)";
+                    badge.style.color = "var(--primary)";
+                    badge.style.border = "1px solid var(--primary)";
                     
-                    // Email Identity Logic
-                    const identityBox = document.getElementById('resIdentity');
-                    if (email) {
-                        if (cert.email_fully_verified) {
-                            identityBox.innerHTML = `<span class="verified-badge">Exact Match ✓</span>`;
-                        }
+                    document.getElementById('certCourse').innerText = result.certificate.course_name;
+                    document.getElementById('certName').innerText = result.certificate.student_name;
+                    document.getElementById('certHash').innerText = result.certificate.tx_hash;
+                    
+                    const emailField = document.getElementById('certEmail');
+                    const emailNote = document.getElementById('emailNote');
+                    
+                    if (result.certificate.email_fully_verified) {
+                        emailField.innerText = result.certificate.student_email;
+                        emailNote.style.display = "block"; 
                     } else {
-                        identityBox.innerHTML = `<span style="color: #888; font-size: 12px;">Not requested</span>`;
+                        emailField.innerText = maskEmail(result.certificate.student_email);
+                        emailNote.style.display = "none";
                     }
-
-                    // Testnet Explorer Link
-                    document.getElementById('resExplorer').href = `https://explorer.aptoslabs.com/txn/${cert.tx_hash}?network=testnet`;
+                    document.getElementById('certIframe').src = result.certificate.pdf_url + "#toolbar=0&navpanes=0&scrollbar=0&view=Fit";
+                    document.getElementById('downloadPdfBtn').href = result.certificate.pdf_url;
                     
-                    resultBox.style.display = 'block';
-                } else {
-                    // ERROR STATE (Caught by your Python Logic)
-                    statusBox.textContent = data.error || "Verification failed.";
-                    statusBox.className = 'error-msg';
-                    statusBox.style.display = 'block';
-                }
+                    const linkBtn = document.getElementById('explorerLink');
+                    linkBtn.classList.remove('hidden');
+                    linkBtn.href = `https://explorer.aptoslabs.com/txn/${txHash}?network=testnet`;
 
-            } catch (error) {
-                console.error('Verification Error:', error);
-                statusBox.textContent = "Network error. Could not reach the verification server.";
-                statusBox.className = 'error-msg';
-                statusBox.style.display = 'block';
+                } else {
+                    // Properly catch backend errors (404/401)
+                    showError(result.error);
+                }
+            } catch (err) {
+                console.error(err);
+                showError("Could not establish a secure connection to the blockchain node.");
             } finally {
-                // Restore Button
                 btn.disabled = false;
-                btnText.style.display = 'block';
-                loader.style.display = 'none';
+                btn.style.opacity = "1";
+                btn.innerText = "Query Blockchain Ledger";
             }
         });
+
+        function showError(errorMessage) {
+            document.getElementById('main-container').style.maxWidth = "550px";
+
+            document.getElementById('input-section').classList.add('hidden');
+            document.getElementById('resultArea').classList.remove('hidden');
+            
+            document.getElementById('successContainer').classList.add('hidden');
+            document.getElementById('errorContainer').classList.remove('hidden');
+            
+            const badge = document.getElementById('statusBadge');
+            const icon = document.getElementById('statusIcon');
+            
+            icon.innerHTML = `<svg viewBox="0 0 24 24" style="width: 55px; height: 55px; fill: none; stroke: #ff4b4b; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0px 0px 8px rgba(255,75,75,0.3));"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`;
+            
+            badge.innerText = "VERIFICATION FAILED";
+            badge.style.background = "rgba(255, 75, 75, 0.1)";
+            badge.style.color = "#ff4b4b";
+            badge.style.border = "1px solid #ff4b4b";
+            
+            document.getElementById('resultTitle').innerText = "Record Not Found";
+            document.getElementById('resultDetails').innerText = errorMessage || "We could not locate a matching certificate for this hash. The credential cannot be verified on the network.";
+            document.getElementById('explorerLink').classList.add('hidden');
+        }
+
+        function resetVerification() {
+            document.getElementById('main-container').style.maxWidth = "550px";
+            
+            setTimeout(() => {
+                document.getElementById('verifyForm').reset();
+                document.getElementById('resultArea').classList.add('hidden');
+                document.getElementById('input-section').classList.remove('hidden');
+            }, 150);
+        }
+
+        const root = document.documentElement;
+        const iconSun = document.getElementById('icon-sun');
+        const iconMoon = document.getElementById('icon-moon');
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        
+        root.setAttribute('data-theme', savedTheme);
+        updateIcons(savedTheme);
+
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            const newTheme = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            root.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateIcons(newTheme);
+        });
+
+        function updateIcons(theme) {
+            if (theme === 'dark') {
+                iconMoon.classList.remove('hidden');
+                iconSun.classList.add('hidden');
+            } else {
+                iconSun.classList.remove('hidden');
+                iconMoon.classList.add('hidden');
+            }
+        }
     </script>
 </body>
 </html>
