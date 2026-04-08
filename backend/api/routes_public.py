@@ -94,13 +94,7 @@ def employer_verify():
     
 @public_bp.route('/api/system-pulse', methods=['GET'])
 def system_pulse():
-    """
-    Invisible keep-alive route. 
-    Wakes up Render, and forces a microscopic Supabase query to reset the 7-day inactivity timer.
-    """
     try:
-        # We ask Supabase for a single, tiny piece of data just to keep the connection warm.
-        # Replace 'certificates' with whatever your actual table name is!
         supabase.table('certificates').select('id').limit(1).execute()
         
         print("System Pulse: Render and Supabase are awake.")
