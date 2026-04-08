@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verify | Credlytic</title>
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
     <style>
+        /* MOBILE SAFETY CONSTRAINTS */
         * { box-sizing: border-box; }
         body, html { width: 100vw; max-width: 100%; overflow-x: hidden; margin: 0; padding: 0; }
 
@@ -17,7 +18,11 @@
 
         .verified-glow { box-shadow: 0 0 40px rgba(0, 224, 121, 0.12); border: 1px solid rgba(0, 224, 121, 0.3) !important; background: linear-gradient(180deg, rgba(0,224,121,0.05) 0%, rgba(255,255,255,0.01) 100%) !important; }
         .data-label { font-size: 0.7rem; color: var(--text-muted); font-weight: 800; letter-spacing: 1px; margin-bottom: 6px; text-transform: uppercase; }
-        .data-value { font-size: 1.15rem; font-weight: 600; color: var(--text-main); }
+        
+        /* FIX: Force long text strings to wrap instead of stretching the container */
+        .data-value { font-size: 1.15rem; font-weight: 600; color: var(--text-main); word-wrap: break-word; overflow-wrap: break-word; }
+        #certEmail { word-break: break-all; } /* Aggressive wrap for the long masked email */
+        
         .hash-box { font-family: 'Courier New', Courier, monospace; font-size: 0.85rem; color: var(--primary); background: rgba(0, 224, 121, 0.05); padding: 10px 14px; border-radius: 6px; border: 1px dashed rgba(0, 224, 121, 0.2); word-break: break-all; }
         
         .btn { white-space: nowrap !important; }
@@ -28,6 +33,7 @@
             gap: 2rem;
             align-items: stretch;
             margin-bottom: 2rem;
+            max-width: 100%;
         }
 
         .pdf-header {
@@ -53,18 +59,20 @@
 
         /* STRICT MOBILE RESPONSIVENESS */
         @media (max-width: 576px) {
-            .glass-card { padding: 2rem 1.2rem !important; }
+            .glass-card { padding: 1.5rem 1rem !important; }
             .verification-grid { gap: 1.5rem; }
-            .verified-glow { padding: 1.25rem !important; }
+            .verified-glow { padding: 1.25rem !important; width: 100%; overflow: hidden; }
             
             /* Prevents the PDF header from pushing the screen out horizontally */
-            .pdf-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+            .pdf-header { flex-direction: column; align-items: stretch; gap: 12px; text-align: center; }
             .pdf-header .btn { width: 100%; justify-content: center; }
             .action-buttons { flex-direction: column; }
             
             /* Scales font to prevent text wrapping breaks */
             h2 { font-size: 1.8rem !important; }
             #certCourse { font-size: 1.4rem !important; }
+            .data-value { font-size: 1rem !important; }
+            #certEmail { font-size: 0.95rem !important; }
             .hash-box { font-size: 0.75rem; padding: 10px; }
         }
     </style>
@@ -152,7 +160,7 @@
                                 </div>
                             </div>
 
-                            <div style="border: 1px solid var(--card-border); border-radius: 12px; overflow: hidden; background: rgba(0,0,0,0.3); display: flex; flex-direction: column;">
+                            <div style="border: 1px solid var(--card-border); border-radius: 12px; overflow: hidden; background: rgba(0,0,0,0.3); display: flex; flex-direction: column; max-width: 100%;">
                                 <div class="pdf-header">
                                     <span class="data-label" style="margin: 0;">Original Document</span>
                                     <a id="downloadPdfBtn" href="#" target="_blank" download class="btn btn-secondary" style="padding: 6px 14px; font-size: 0.8rem; display: flex; align-items: center; gap: 8px;">
@@ -275,7 +283,7 @@
                 clearTimeout(wakeTimeout);
                 btn.disabled = false;
                 btn.style.opacity = "1";
-                btn.innerText = "Verify Result";
+                btn.innerText = "Verify Result"; // Reset to original UI text
                 btn.style.fontSize = "1.15rem";
             }
         });
