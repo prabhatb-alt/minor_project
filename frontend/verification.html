@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verify | Credlytic</title>
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
@@ -27,8 +27,26 @@
             margin-bottom: 2rem;
         }
 
+        .action-buttons {
+            display: flex; 
+            gap: 1rem; 
+            justify-content: center; 
+            max-width: 500px; 
+            margin: 0 auto;
+        }
+
         @media (max-width: 960px) {
             .verification-grid { grid-template-columns: 1fr; }
+        }
+
+        /* MOBILE FIXES */
+        @media (max-width: 576px) {
+            .glass-card { padding: 2rem 1.2rem !important; }
+            .action-buttons { flex-direction: column; }
+            .verified-glow { padding: 1.5rem !important; }
+            h2 { font-size: 1.8rem !important; }
+            #certCourse { font-size: 1.5rem !important; }
+            .btn { width: 100%; justify-content: center; }
         }
     </style>
 </head>
@@ -134,7 +152,7 @@
                         <p id="resultDetails" class="text-muted" style="margin-bottom: 2.5rem; font-size: 1.1rem; line-height: 1.6; max-width: 500px; margin-left: auto; margin-right: auto;"></p>
                     </div>
                     
-                    <div style="display: flex; gap: 1rem; justify-content: center; max-width: 500px; margin: 0 auto;">
+                    <div class="action-buttons">
                         <a id="explorerLink" href="#" target="_blank" class="btn btn-primary" style="flex: 1; text-align: center; font-size: 1.1rem; padding: 14px;">View Raw Ledger</a>
                         <button onclick="resetVerification()" class="btn btn-secondary" style="flex: 1; font-size: 1.1rem; padding: 14px;">Verify Another</button>
                     </div>
@@ -177,12 +195,13 @@
             btn.innerText = "Connecting to Node...";
 
             try {
-                // THE FIX: Direct fetch replaces the api.js wrapper to properly handle 401/404 logic
-                const response = await fetch('/api/employer/verify', {
+                // Connecting correctly to your Python backend on Render
+                const response = await fetch('https://minor-project-mzi2.onrender.com/api/employer/verify', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ tx_hash: txHash, email: email })
                 });
+                
                 const result = await response.json();
 
                 inputSection.classList.add('hidden');
@@ -223,11 +242,12 @@
                     
                     const linkBtn = document.getElementById('explorerLink');
                     linkBtn.classList.remove('hidden');
+                    
+                    // Fixed ?network=testnet
                     linkBtn.href = `https://explorer.aptoslabs.com/txn/${txHash}?network=testnet`;
 
                 } else {
-                    // Properly catch backend errors (404/401)
-                    showError(result.error);
+                    showError(result.error || "Verification failed on the network.");
                 }
             } catch (err) {
                 console.error(err);
