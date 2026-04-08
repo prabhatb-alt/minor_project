@@ -91,3 +91,21 @@ def employer_verify():
     except Exception as e:
         print("Verification error:", e)
         return jsonify({"ok": False, "error": "Internal server error during verification"}), 500
+    
+@public_bp.route('/api/system-pulse', methods=['GET'])
+def system_pulse():
+    """
+    Invisible keep-alive route. 
+    Wakes up Render, and forces a microscopic Supabase query to reset the 7-day inactivity timer.
+    """
+    try:
+        # We ask Supabase for a single, tiny piece of data just to keep the connection warm.
+        # Replace 'certificates' with whatever your actual table name is!
+        supabase.table('certificates').select('id').limit(1).execute()
+        
+        print("System Pulse: Render and Supabase are awake.")
+        return jsonify({"status": "Systems Nominal", "database": "Online"}), 200
+        
+    except Exception as e:
+        print("System Pulse Error:", e)
+        return jsonify({"status": "Database Error", "details": str(e)}), 500
