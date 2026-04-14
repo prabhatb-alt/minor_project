@@ -5,7 +5,7 @@
 <img width="2777" height="1596" alt="image" src="https://github.com/user-attachments/assets/28b61055-1ed3-47ef-a1a4-e0b9f8237984" />
 
 [![Aptos](https://img.shields.io/badge/Blockchain-Aptos_Testnet-2bd2a5?style=flat-square\&logo=aptos)](https://aptoslabs.com/)
-[![Flask](https://img.shields.io/badge/Backend-Flask_Python-000000?style=flat-square\&logo=flask)](https://flask.palletsprojects.com/)
+[![Flask](https://img.shields.io/badge/Backend-Flask-000000?style=flat-square\&logo=flask)](https://flask.palletsprojects.com/)
 [![Supabase](https://img.shields.io/badge/Database-Supabase-3ECF8E?style=flat-square\&logo=supabase)](https://supabase.com/)
 [![Vercel](https://img.shields.io/badge/Hosting-Vercel-000000?style=flat-square\&logo=vercel)](https://vercel.com/)
 [![Render](https://img.shields.io/badge/Compute-Render-46E3B7?style=flat-square)](https://render.com/)
