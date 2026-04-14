@@ -8,7 +8,7 @@
 [![Vercel](https://img.shields.io/badge/Hosting-Vercel-000000?style=flat-square\&logo=vercel)](https://vercel.com/)
 [![Render](https://img.shields.io/badge/Compute-Render-46E3B7?style=flat-square)](https://render.com/)
 
-
+<img width="2777" height="1596" alt="image" src="https://github.com/user-attachments/assets/28b61055-1ed3-47ef-a1a4-e0b9f8237984" />
 
 Credlytic is a decentralized application designed to eliminate academic and professional credential fraud.
 It transforms traditional certificates into **immutable, publicly verifiable on-chain NFTs**, ensuring authenticity and tamper-proof validation.
