@@ -2,7 +2,7 @@
 
 >**Zero-Trust Academic Credentialing & Verification System Anchored on the Aptos Blockchain**
 
-<img width="2777" height="1596" alt="image" src="https://github.com/user-attachments/assets/28b61055-1ed3-47ef-a1a4-e0b9f8237984" />
+<img width="2777" height="1196" alt="image" src="https://github.com/user-attachments/assets/28b61055-1ed3-47ef-a1a4-e0b9f8237984" />
 
 [![Aptos](https://img.shields.io/badge/Blockchain-Aptos_Testnet-2bd2a5?style=flat-square\&logo=aptos)](https://aptoslabs.com/)
 [![Flask](https://img.shields.io/badge/Backend-Flask-000000?style=flat-square\&logo=flask)](https://flask.palletsprojects.com/)
